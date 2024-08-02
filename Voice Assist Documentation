@@ -1,0 +1,37 @@
+Documentation
+speak(text)
+Converts the provided text to speech using the text-to-speech engine.
+
+Parameters:
+
+text (str): The text you want Sabrina to speak.
+listen()
+Listens to the user's voice input and returns the recognized text.
+
+Returns:
+
+str: Recognized text from the user's speech.
+get_weather(city)
+Fetches the current weather information for the specified city.
+
+Parameters:
+
+city (str): Name of the city for which to get weather information.
+Returns:
+
+str: A description of the weather and temperature in the specified city.
+set_reminder(reminder_time, reminder_message)
+Sets a reminder that notifies the user at the specified reminder_time with the reminder_message.
+
+Parameters:
+
+reminder_time (str): The time at which the reminder should trigger (in "HH
+" format).
+reminder_message (str): The message to remind the user.
+main()
+Main function that continuously listens for user commands and performs actions based on the recognized text.
+
+Running the Code
+Replace 'your_api_key' with your actual OpenWeatherMap API key.
+Run the script using Python.
+This code provides a basic framework for Sabrina. You can expand its functionality by adding more features and improving its natural language processing capabilities.
