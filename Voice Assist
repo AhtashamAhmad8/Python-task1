@@ -1,0 +1,92 @@
+import speech_recognition as sr
+import pyttsx3
+import pyowm
+import datetime
+import time
+
+# Initialize text-to-speech engine
+engine = pyttsx3.init()
+
+# Initialize the speech recognizer
+recognizer = sr.Recognizer()
+
+# Weather API key
+API_KEY = 'your_api_key'  # Replace with your OpenWeatherMap API key
+
+# Initialize OpenWeatherMap
+owm = pyowm.OWM(API_KEY)
+
+def speak(text):
+    """Converts text to speech."""
+    engine.say(text)
+    engine.runAndWait()
+
+def listen():
+    """Listens for audio input from the user and returns the recognized text."""
+    with sr.Microphone() as source:
+        print("Listening...")
+        audio = recognizer.listen(source)
+        try:
+            command = recognizer.recognize_google(audio)
+            print(f"You said: {command}")
+            return command
+        except sr.UnknownValueError:
+            print("Sorry, I did not understand that.")
+            speak("Sorry, I did not understand that.")
+            return None
+        except sr.RequestError:
+            print("Sorry, there was an issue with the speech recognition service.")
+            speak("Sorry, there was an issue with the speech recognition service.")
+            return None
+
+def get_weather(city):
+    """Fetches weather information for the specified city."""
+    try:
+        observation = owm.weather_at_place(city)
+        weather = observation.get_weather()
+        temperature = weather.get_temperature('celsius')['temp']
+        status = weather.get_status()
+        return f"The weather in {city} is {status} with a temperature of {temperature}°C."
+    except:
+        return "Sorry, I couldn't fetch the weather information."
+
+def set_reminder(reminder_time, reminder_message):
+    """Sets a reminder that will notify the user at the specified time."""
+    while True:
+        now = datetime.datetime.now()
+        if now.strftime("%H:%M") == reminder_time:
+            speak(f"Reminder: {reminder_message}")
+            break
+        time.sleep(30)  # Check every 30 seconds
+
+def main():
+    """Main function to handle user commands."""
+    speak("Hello, I'm Sabrina. How can I assist you today?")
+    
+    while True:
+        command = listen()
+        
+        if command:
+            command = command.lower()
+            
+            if "weather" in command:
+                city = command.split("in")[-1].strip()
+                weather_info = get_weather(city)
+                speak(weather_info)
+            elif "reminder" in command:
+                try:
+                    parts = command.split("at")
+                    reminder_message = parts[0].replace("reminder", "").strip()
+                    reminder_time = parts[1].strip()
+                    speak(f"Setting a reminder for {reminder_message} at {reminder_time}.")
+                    set_reminder(reminder_time, reminder_message)
+                except IndexError:
+                    speak("Sorry, I didn't understand the reminder time.")
+            elif "stop" in command:
+                speak("Goodbye!")
+                break
+            else:
+                speak("Sorry, I don't understand that command.")
+
+if __name__ == "__main__":
+    main()
