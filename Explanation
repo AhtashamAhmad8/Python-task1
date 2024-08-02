@@ -1,0 +1,6 @@
+Documentation and Features:
+Type Hinting: n: int specifies that the argument should be an integer, and -> List[int] indicates that the function returns a list of integers.
+Error Handling: The function checks if n is a non-negative integer and raises a ValueError if not.
+Base Cases: Handles cases where n is 0 or 1 explicitly.
+Iterative Calculation: Uses an iterative approach to generate the Fibonacci sequence, which is generally more efficient than a recursive approach for this purpose.
+Example Usage: The code snippet includes an example usage under the if __name__ == "__main__": block, which ensures that this part of the code runs only when the script is executed directly.
